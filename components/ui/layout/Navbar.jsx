@@ -10,9 +10,9 @@ import { useAuth } from '@/components/providers/AuthProvider';
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Team BNF', href: '/about#team' },
   { name: 'Programs', href: '/programs' },
   { name: 'Journaling', href: '/journaling' },
+  { name: 'Product', href: '/product' },
   { name: 'Impact', href: '/impact' },
   { name: 'Partner', href: '/partner' },
   { name: 'Career', href: '/career' },
