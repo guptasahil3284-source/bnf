@@ -361,140 +361,112 @@ const journalsData = [
 ];
 
 /* ═══════════════════════════════════════════════════
-   STORE HERO BANNER SECTION WITH MOTION ANIMATIONS
+   STORE HERO BANNER SECTION (FULL-BLEED BACKGROUND WITH ANIMATIONS)
    ═══════════════════════════════════════════════════ */
 function StoreHero({ onExplore }) {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
   return (
-    <section ref={heroRef} className="relative py-24 bg-gradient-to-br from-[#0D4F4F] via-[#0A3A3A] to-[#0F1F1F] text-white overflow-hidden pt-32">
-      {/* Background Glow Blobs */}
+    <section ref={heroRef} className="relative w-full min-h-[85vh] flex items-center pt-32 pb-24 overflow-hidden bg-[#0F1F1F] text-white">
+      {/* Full-Bleed Background Image with Animated Zoom & Parallax */}
+      <motion.div style={{ y: bgY, scale: bgScale }} className="absolute inset-0 z-0">
+        <Image
+          src="/images/product/hero-banner.jpg"
+          alt="BNF Guided Journal Store Background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center transition-transform duration-1000"
+        />
+        {/* Dark Gradient Invert Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F1F1F]/95 via-[#0D4F4F]/85 to-[#0F1F1F]/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0F1F1F] via-transparent to-black/40" />
+      </motion.div>
+
+      {/* Floating Glowing Ambient Orbs */}
       <motion.div
         animate={{ scale: [1, 1.25, 1], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-0 right-0 w-[550px] h-[550px] rounded-full blur-[150px] bg-[#E8705A]/25 pointer-events-none"
+        className="absolute top-1/4 right-10 w-[500px] h-[500px] rounded-full blur-[140px] bg-[#E8705A]/25 pointer-events-none z-[2]"
       />
       <motion.div
-        animate={{ scale: [1, 1.2, 1], x: [0, -25, 0] }}
+        animate={{ scale: [1, 1.2, 1], x: [0, -30, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-0 left-0 w-[450px] h-[450px] rounded-full blur-[140px] bg-[#5BB8D4]/25 pointer-events-none"
+        className="absolute bottom-10 left-10 w-[450px] h-[450px] rounded-full blur-[130px] bg-[#5BB8D4]/25 pointer-events-none z-[2]"
       />
 
       <Container className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Text — 7 cols */}
-          <div className="lg:col-span-7 space-y-6">
-            <FadeIn>
-              <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#FF9933] animate-ping" />
-                <span className="text-xs font-bold text-white uppercase tracking-wider font-[family-name:var(--font-sora)]">
-                  BNF Personalized Journal Store
+        <div className="max-w-4xl space-y-8">
+          {/* Top Tagline Badge */}
+          <FadeIn>
+            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FF9933] animate-ping" />
+              <span className="text-xs font-bold text-white uppercase tracking-wider font-[family-name:var(--font-sora)]">
+                BNF Personalized Journal Store
+              </span>
+            </div>
+          </FadeIn>
+
+          {/* Main Headline */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-[family-name:var(--font-sora)] font-extrabold text-white leading-[1.1] drop-shadow-2xl">
+            <TextReveal text="Unlock Your Potential One Journal at a Time" delay={0.2} />
+          </h1>
+
+          {/* Subtitle */}
+          <FadeIn delay={0.4}>
+            <p className="text-lg sm:text-xl text-gray-200 font-[family-name:var(--font-inter)] max-w-2xl leading-relaxed drop-shadow-md">
+              Discover personalized journals designed according to your personality, interests, and career aspirations. Every journal is built to guide your self-discovery, reflection, and future growth.
+            </p>
+          </FadeIn>
+
+          {/* Floating Highlight Chips Strip */}
+          <FadeIn delay={0.5}>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2">
+                <span className="text-amber-400">✨</span>
+                <span className="text-xs font-bold text-white font-[family-name:var(--font-sora)]">
+                  10,000+ Students Guided
                 </span>
               </div>
-            </FadeIn>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-[family-name:var(--font-sora)] font-extrabold text-white leading-tight drop-shadow-md">
-              <TextReveal text="Unlock Your Potential One Journal at a Time" delay={0.2} />
-            </h1>
-
-            <FadeIn delay={0.4}>
-              <p className="text-base sm:text-lg text-gray-200 font-[family-name:var(--font-inter)] max-w-xl leading-relaxed">
-                Discover personalized journals designed according to your personality, interests, and career aspirations. Every journal is built to guide your self-discovery, reflection, and future growth.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.6}>
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <motion.button
-                  onClick={onExplore}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="px-8 py-4 rounded-full bg-[#E8705A] text-white font-[family-name:var(--font-sora)] font-bold text-sm shadow-xl hover:bg-[#d4624e] transition-colors"
-                >
-                  Explore Journals 🛍️
-                </motion.button>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
-                  <Link
-                    href="/journaling"
-                    className="inline-block px-8 py-4 rounded-full bg-white/10 border border-white/30 text-white font-[family-name:var(--font-sora)] font-bold text-sm hover:bg-white/20 transition-all backdrop-blur-md"
-                  >
-                    Take Psychometric Assessment 🧠
-                  </Link>
-                </motion.div>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2">
+                <span className="text-emerald-400">📜</span>
+                <span className="text-xs font-bold text-white font-[family-name:var(--font-sora)]">
+                  NEP 2020 Aligned
+                </span>
               </div>
-            </FadeIn>
-          </div>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2">
+                <span className="text-sky-400">🧠</span>
+                <span className="text-xs font-bold text-white font-[family-name:var(--font-sora)]">
+                  Psychometric Calibrated
+                </span>
+              </div>
+            </div>
+          </FadeIn>
 
-          {/* Right Banner Visual with Motion Animations — 5 cols */}
-          <div className="lg:col-span-5 relative">
-            <motion.div style={{ y: heroY, scale: imageScale }} className="relative">
-              {/* Outer Pulsing Glowing Aura */}
-              <motion.div
-                animate={{ opacity: [0.4, 0.75, 0.4], scale: [0.97, 1.03, 0.97] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -inset-4 bg-gradient-to-tr from-[#FF9933]/30 via-[#E8705A]/30 to-[#5BB8D4]/30 rounded-[36px] blur-2xl pointer-events-none"
-              />
-
-              {/* Floating Bob Image Container */}
-              <motion.div
-                animate={{ y: [0, -12, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/30 bg-[#0F1F1F] group cursor-pointer"
+          {/* Action CTAs */}
+          <FadeIn delay={0.6}>
+            <div className="flex flex-wrap items-center gap-4 pt-4">
+              <motion.button
+                onClick={onExplore}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+                className="px-9 py-4.5 rounded-full bg-[#E8705A] text-white font-[family-name:var(--font-sora)] font-bold text-base shadow-2xl hover:bg-[#d4624e] transition-colors"
               >
-                <Image
-                  src="/images/product/hero-banner.jpg"
-                  alt="BNF Guided Journal Store"
-                  width={600}
-                  height={400}
-                  priority
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                  className="object-cover w-full h-[370px] sm:h-[420px] transition-transform duration-700 group-hover:scale-108"
-                />
-
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
-
-                {/* Floating Top Left Badge */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 }}
-                  className="absolute top-5 left-5 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-lg flex items-center gap-1.5"
+                Explore Journals 🛍️
+              </motion.button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  href="/journaling"
+                  className="inline-block px-9 py-4.5 rounded-full bg-white/10 border border-white/30 text-white font-[family-name:var(--font-sora)] font-bold text-base hover:bg-white/20 transition-all backdrop-blur-md"
                 >
-                  <span className="w-2 h-2 rounded-full bg-[#138808] animate-ping" />
-                  <span className="text-[11px] font-bold text-[#0D4F4F] font-[family-name:var(--font-sora)]">
-                    📜 NEP 2020 Aligned
-                  </span>
-                </motion.div>
-
-                {/* Floating Top Right Badge */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.9 }}
-                  className="absolute top-5 right-5 bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 shadow-lg flex items-center gap-1.5"
-                >
-                  <span className="text-xs">✨</span>
-                  <span className="text-[11px] font-bold text-[#FF9933] font-[family-name:var(--font-sora)]">
-                    10,000+ Students
-                  </span>
-                </motion.div>
-
-                {/* Bottom Caption Overlay */}
-                <div className="absolute bottom-5 left-5 right-5 text-white space-y-1">
-                  <span className="text-xs font-extrabold text-[#FF9933] uppercase tracking-wider font-[family-name:var(--font-sora)] block">
-                    ⚡ Personalized Learning & Career Guidance
-                  </span>
-                  <p className="text-xs text-gray-200 font-[family-name:var(--font-inter)] leading-relaxed">
-                    Calibrated specifically for School, College, and Professional Aspirations.
-                  </p>
-                </div>
+                  Take Psychometric Assessment 🧠
+                </Link>
               </motion.div>
-            </motion.div>
-          </div>
+            </div>
+          </FadeIn>
         </div>
       </Container>
     </section>
