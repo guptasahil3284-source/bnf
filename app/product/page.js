@@ -13,6 +13,7 @@ import Link from 'next/link';
 import Navbar from '@/components/ui/layout/Navbar';
 import Footer from '@/components/sections/Footer';
 import Container from '@/components/ui/Container';
+import FizzyButton from '@/components/ui/FizzyButton';
 
 /* ═══════════════════════════════════════════════════
    ANIMATION HELPER PRIMITIVES
@@ -449,22 +450,14 @@ function StoreHero({ onExplore }) {
           {/* Action CTAs */}
           <FadeIn delay={0.6}>
             <div className="flex flex-wrap items-center gap-4 pt-4">
-              <motion.button
-                onClick={onExplore}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.96 }}
-                className="px-9 py-4.5 rounded-full bg-[#E8705A] text-white font-[family-name:var(--font-sora)] font-bold text-base shadow-2xl hover:bg-[#d4624e] transition-colors"
-              >
-                Explore Journals 🛍️
-              </motion.button>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
-                <Link
-                  href="/journaling"
-                  className="inline-block px-9 py-4.5 rounded-full bg-white/10 border border-white/30 text-white font-[family-name:var(--font-sora)] font-bold text-base hover:bg-white/20 transition-all backdrop-blur-md"
-                >
-                  Take Psychometric Assessment 🧠
-                </Link>
-              </motion.div>
+              <FizzyButton onClick={onExplore} variant="primary" icon="🛍️" className="text-base px-8 py-4">
+                Explore Journals
+              </FizzyButton>
+              <Link href="/journaling">
+                <FizzyButton variant="outline" icon="🧠" className="text-base px-8 py-4">
+                  Take Psychometric Assessment
+                </FizzyButton>
+              </Link>
             </div>
           </FadeIn>
         </div>
@@ -1136,19 +1129,21 @@ export default function ProductStorePage() {
 
                     {/* Action Buttons */}
                     <div className="pt-4 border-t border-gray-100 mt-4 space-y-2">
-                      <button
+                      <FizzyButton
                         onClick={() => handleAddToCart(journal, 1)}
-                        className="w-full py-3 rounded-xl bg-[#E8705A] text-white font-[family-name:var(--font-sora)] font-bold text-xs shadow-md hover:bg-[#d4624e] transition-colors flex items-center justify-center gap-2"
+                        variant="primary"
+                        icon="🛒"
+                        showCheckmarkOnSuccess={true}
+                        className="w-full py-2.5 rounded-xl text-xs"
                       >
-                        <span>Add to Cart</span>
-                        <span>🛒</span>
-                      </button>
+                        Add to Cart
+                      </FizzyButton>
                       <button
                         onClick={() => {
                           setSelectedJournal(journal);
                           setQuickViewOpen(true);
                         }}
-                        className="w-full py-2.5 rounded-xl bg-gray-100 text-[#0D4F4F] font-[family-name:var(--font-sora)] font-bold text-xs hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
+                        className="w-full py-2.5 rounded-xl bg-gray-100 text-[#0D4F4F] font-[family-name:var(--font-sora)] font-bold text-xs hover:bg-gray-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
                       >
                         <span>View Details</span>
                         <span className="transition-transform group-hover:translate-x-1">→</span>
