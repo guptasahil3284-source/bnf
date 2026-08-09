@@ -804,6 +804,9 @@ export default function ProductStorePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // 4 items per page for clean pagination
+
   const [selectedJournal, setSelectedJournal] = useState(null);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -833,6 +836,31 @@ export default function ProductStorePage() {
       item.category.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCat && matchesSearch;
   });
+
+  // Reset pagination on filter change
+  const handleCategoryChange = (cat) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  // Pagination Math
+  const totalPages = Math.ceil(filteredJournals.length / itemsPerPage) || 1;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedJournals = filteredJournals.slice(startIndex, startIndex + itemsPerPage);
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      if (catalogRef.current) {
+        catalogRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   // Add to Cart
   const handleAddToCart = (journal, qty = 1) => {
@@ -893,7 +921,7 @@ export default function ProductStorePage() {
         />
 
         {/* Search, Filter & Catalog Section */}
-        <section ref={catalogRef} className="py-20">
+        <section ref={catalogRef} className="py-20 scroll-mt-20">
           <Container>
             {/* Search & Controls Bar */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-200/80 mb-12 space-y-6">
@@ -905,7 +933,7 @@ export default function ProductStorePage() {
                     type="text"
                     placeholder="Search by career, interest or journal name..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200 focus:outline-none focus:border-[#E8705A] text-sm font-[family-name:var(--font-inter)] bg-gray-50/50 focus:bg-white transition-colors"
                   />
                 </div>
@@ -914,7 +942,7 @@ export default function ProductStorePage() {
                 <div className="md:col-span-3">
                   <select
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
                     className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 text-xs sm:text-sm font-bold text-[#0D4F4F] font-[family-name:var(--font-sora)] bg-gray-50/50 focus:bg-white cursor-pointer"
                   >
                     {categories.map((c) => (
@@ -945,7 +973,7 @@ export default function ProductStorePage() {
                 {categories.map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => setSelectedCategory(cat)}
+                    onClick={() => handleCategoryChange(cat)}
                     className={`px-5 py-2.5 rounded-full text-xs font-bold font-[family-name:var(--font-sora)] shrink-0 transition-all ${
                       selectedCategory === cat
                         ? 'bg-[#E8705A] text-white shadow-md scale-102'
@@ -958,21 +986,24 @@ export default function ProductStorePage() {
               </div>
             </div>
 
-            {/* Catalog Grid Heading */}
-            <div className="flex items-center justify-between mb-8">
+            {/* Catalog Grid Heading & Stats */}
+            <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#E8705A] font-[family-name:var(--font-sora)] block">
                   Recommended For You
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-[family-name:var(--font-sora)] font-extrabold text-[#0D4F4F]">
-                  BNF Guided Journals Catalog ({filteredJournals.length})
+                  BNF Guided Journals Catalog
                 </h2>
               </div>
+              <span className="text-xs font-bold text-gray-500 font-[family-name:var(--font-inter)]">
+                Showing {filteredJournals.length > 0 ? startIndex + 1 : 0}–{Math.min(startIndex + itemsPerPage, filteredJournals.length)} of {filteredJournals.length} Journals
+              </span>
             </div>
 
             {/* Product Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {filteredJournals.map((journal, i) => (
+              {paginatedJournals.map((journal, i) => (
                 <FadeIn key={journal.id} delay={0.05 * (i % 4)}>
                   <motion.div
                     whileHover={{ y: -6, scale: 1.02 }}
@@ -1052,6 +1083,51 @@ export default function ProductStorePage() {
                 </FadeIn>
               ))}
             </div>
+
+            {/* Pagination Controls Bar with Prev/Next Arrows */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between border-t border-gray-200 pt-8 mt-12 flex-wrap gap-4">
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`px-5 py-3 rounded-2xl font-[family-name:var(--font-sora)] font-bold text-xs flex items-center gap-2 transition-all ${
+                    currentPage === 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-[#0D4F4F] text-white hover:bg-[#073636] shadow-md'
+                  }`}
+                >
+                  ← Prev
+                </button>
+
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => goToPage(pageNum)}
+                      className={`w-10 h-10 rounded-2xl font-[family-name:var(--font-sora)] font-bold text-xs transition-all ${
+                        currentPage === pageNum
+                          ? 'bg-[#E8705A] text-white shadow-lg scale-105'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`px-5 py-3 rounded-2xl font-[family-name:var(--font-sora)] font-bold text-xs flex items-center gap-2 transition-all ${
+                    currentPage === totalPages
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-[#0D4F4F] text-white hover:bg-[#073636] shadow-md'
+                  }`}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
 
             {/* 5-Step Workflow Banner Strip */}
             <div className="mt-20 bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-gray-200/80">
