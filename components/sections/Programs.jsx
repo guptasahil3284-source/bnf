@@ -92,7 +92,7 @@ export default function Programs() {
                   </li>
                 ))}
               </ul>
-              <Button href="/contact" variant="primary">Learn More</Button>
+              <Button href="/programs" variant="primary">Learn More</Button>
             </div>
           </div>
 
@@ -126,7 +126,7 @@ export default function Programs() {
                   </li>
                 ))}
               </ul>
-              <Button href="/contact" variant="primary">Learn More</Button>
+              <Button href="/programs" variant="primary">Learn More</Button>
             </div>
           </div>
         </div>
