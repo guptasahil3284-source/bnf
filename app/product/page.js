@@ -955,7 +955,7 @@ export default function ProductStorePage() {
         <section ref={catalogRef} className="py-20 scroll-mt-20">
           <Container>
             {/* Search & Controls Bar */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-gray-200/80 mb-12 space-y-6">
+            <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-200/80 mb-12 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                 {/* Search Bar — 6 cols */}
                 <div className="md:col-span-6 relative">
@@ -965,7 +965,7 @@ export default function ProductStorePage() {
                     placeholder="Search by career, interest or journal name..."
                     value={searchQuery}
                     onChange={(e) => handleSearchChange(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200 focus:outline-none focus:border-[#E8705A] text-sm font-[family-name:var(--font-inter)] bg-gray-50/50 focus:bg-white transition-colors"
+                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200 focus:outline-none focus:border-[#E8705A] focus:ring-4 focus:ring-[#E8705A]/15 text-sm font-[family-name:var(--font-inter)] bg-gray-50/50 focus:bg-white transition-all shadow-inner"
                   />
                 </div>
 
@@ -974,7 +974,7 @@ export default function ProductStorePage() {
                   <select
                     value={selectedCategory}
                     onChange={(e) => handleCategoryChange(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 text-xs sm:text-sm font-bold text-[#0D4F4F] font-[family-name:var(--font-sora)] bg-gray-50/50 focus:bg-white cursor-pointer"
+                    className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 text-xs sm:text-sm font-bold text-[#0D4F4F] font-[family-name:var(--font-sora)] bg-gray-50/50 focus:bg-white cursor-pointer shadow-sm"
                   >
                     {categories.map((c) => (
                       <option key={c} value={c}>
@@ -989,7 +989,7 @@ export default function ProductStorePage() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 text-xs sm:text-sm font-bold text-gray-700 font-[family-name:var(--font-sora)] bg-gray-50/50 focus:bg-white cursor-pointer"
+                    className="w-full px-4 py-3.5 rounded-2xl border border-gray-200 text-xs sm:text-sm font-bold text-gray-700 font-[family-name:var(--font-sora)] bg-gray-50/50 focus:bg-white cursor-pointer shadow-sm"
                   >
                     <option value="popular">Sort By: Most Popular</option>
                     <option value="rating">Sort By: Highest Rating</option>
@@ -999,115 +999,159 @@ export default function ProductStorePage() {
                 </div>
               </div>
 
-              {/* Category Filter Pills */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-                {categories.map((cat) => (
+              {/* Category Filter Pills with Emojis */}
+              <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+                {[
+                  { name: 'All', emoji: '✨' },
+                  { name: 'Engineering', emoji: '⚙️' },
+                  { name: 'Medical', emoji: '🩺' },
+                  { name: 'Business', emoji: '💼' },
+                  { name: 'Creative Arts', emoji: '🎨' },
+                  { name: 'Civil Services', emoji: '🏛️' },
+                  { name: 'Self Growth', emoji: '🌱' },
+                  { name: 'Leadership', emoji: '👑' },
+                ].map((item) => (
                   <button
-                    key={cat}
-                    onClick={() => handleCategoryChange(cat)}
-                    className={`px-5 py-2.5 rounded-full text-xs font-bold font-[family-name:var(--font-sora)] shrink-0 transition-all ${
-                      selectedCategory === cat
-                        ? 'bg-[#E8705A] text-white shadow-md scale-102'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    key={item.name}
+                    onClick={() => handleCategoryChange(item.name)}
+                    className={`px-5 py-2.5 rounded-2xl text-xs font-bold font-[family-name:var(--font-sora)] shrink-0 transition-all flex items-center gap-2 ${
+                      selectedCategory === item.name
+                        ? 'bg-[#E8705A] text-white shadow-lg shadow-[#E8705A]/25 scale-102'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-[#0D4F4F]'
                     }`}
                   >
-                    {cat}
+                    <span>{item.emoji}</span>
+                    <span>{item.name}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Catalog Grid Heading & Stats */}
-            <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+            {/* Catalog Grid Header */}
+            <div className="flex items-center justify-between mb-10 flex-wrap gap-4 border-b border-gray-200/80 pb-6">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#E8705A] font-[family-name:var(--font-sora)] block">
-                  Recommended For You
+                <span className="text-xs font-bold uppercase tracking-widest text-[#E8705A] font-[family-name:var(--font-sora)] block mb-1">
+                  ✨ Curated Student Editions
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-[family-name:var(--font-sora)] font-extrabold text-[#0D4F4F]">
+                <h2 className="text-3xl sm:text-4xl font-[family-name:var(--font-sora)] font-extrabold text-[#0D4F4F]">
                   BNF Guided Journals Catalog
                 </h2>
               </div>
-              <span className="text-xs font-bold text-gray-500 font-[family-name:var(--font-inter)]">
+              <div className="bg-white px-4 py-2 rounded-2xl border border-gray-200 text-xs font-bold text-[#0D4F4F] font-[family-name:var(--font-sora)] shadow-sm">
                 Showing {filteredJournals.length > 0 ? startIndex + 1 : 0}–{Math.min(startIndex + itemsPerPage, filteredJournals.length)} of {filteredJournals.length} Journals
-              </span>
+              </div>
             </div>
 
-            {/* Product Cards Grid */}
+            {/* Ultra-Modern 3D Hardcover Book Catalog Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {paginatedJournals.map((journal, i) => (
-                <FadeIn key={journal.id} delay={0.05 * (i % 4)}>
+                <FadeIn key={journal.id} delay={0.06 * (i % 4)}>
                   <motion.div
-                    whileHover={{ y: -6, scale: 1.02 }}
-                    className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between h-full group relative overflow-hidden"
+                    whileHover={{ y: -8 }}
+                    className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between h-full group relative overflow-hidden"
                   >
-                    {/* Badge */}
+                    {/* Top Bar: Category Pill & Star Rating */}
                     <div className="flex items-center justify-between mb-4">
                       <span
-                        className="text-[10px] font-bold px-3 py-1 rounded-full text-white font-[family-name:var(--font-sora)]"
+                        className="text-[10px] font-extrabold px-3 py-1 rounded-full text-white uppercase tracking-wider font-[family-name:var(--font-sora)] shadow-sm"
                         style={{ backgroundColor: journal.color }}
                       >
                         {journal.category}
                       </span>
-                      <span className="text-xs font-bold text-amber-500 flex items-center gap-1">
-                        ★ {journal.rating}
-                      </span>
+                      <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full text-xs font-bold text-amber-700">
+                        <span>★</span>
+                        <span>{journal.rating}</span>
+                      </div>
                     </div>
 
-                    {/* 3D Journal Book Visual Card */}
+                    {/* 3D Perspective Journal Hardcover Visual */}
                     <div
                       onClick={() => {
                         setSelectedJournal(journal);
                         setQuickViewOpen(true);
                       }}
-                      className="rounded-2xl p-6 text-white text-center shadow-lg flex flex-col items-center justify-center min-h-[220px] cursor-pointer relative overflow-hidden group-hover:scale-103 transition-transform"
-                      style={{ backgroundColor: journal.color }}
+                      className="relative rounded-2xl p-7 text-white text-center shadow-xl flex flex-col items-center justify-between min-h-[240px] cursor-pointer overflow-hidden transition-all duration-500 group-hover:scale-103 group-hover:shadow-2xl border-l-4 border-white/40"
+                      style={{
+                        background: `linear-gradient(135deg, ${journal.color} 0%, ${journal.color}DD 100%)`,
+                      }}
                     >
-                      <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl mb-3">
+                      {/* Decorative Gold Spine Stripe */}
+                      <div className="absolute top-0 bottom-0 left-3 w-1 bg-white/20 pointer-events-none" />
+
+                      {/* Top Emblem */}
+                      <div className="w-11 h-11 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-xl shadow-inner mb-3">
                         📘
                       </div>
-                      <h3 className="font-[family-name:var(--font-sora)] font-extrabold text-lg text-white leading-tight">
-                        {journal.title}
-                      </h3>
-                      <span className="text-[10px] text-white/80 font-[family-name:var(--font-inter)] mt-2 block">
-                        Quick Preview →
-                      </span>
+
+                      {/* Title */}
+                      <div className="space-y-1 my-auto">
+                        <span className="text-[9px] uppercase tracking-widest font-extrabold text-white/80 font-[family-name:var(--font-sora)] block">
+                          BNF GUIDED EDITION
+                        </span>
+                        <h3 className="font-[family-name:var(--font-sora)] font-extrabold text-xl text-white leading-tight drop-shadow-md">
+                          {journal.title}
+                        </h3>
+                      </div>
+
+                      {/* Bottom Hover Preview Pill */}
+                      <div className="mt-4 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full text-[10px] font-bold text-white uppercase tracking-wider font-[family-name:var(--font-sora)] group-hover:bg-white group-hover:text-[#0D4F4F] transition-all">
+                        Quick Details 👁️
+                      </div>
                     </div>
 
-                    {/* Description & Price */}
-                    <div className="mt-4 space-y-2">
-                      <h4 className="font-[family-name:var(--font-sora)] font-bold text-base text-[#0D4F4F]">
+                    {/* Description & Features Checklist */}
+                    <div className="mt-5 space-y-3">
+                      <h4 className="font-[family-name:var(--font-sora)] font-extrabold text-base text-[#0D4F4F]">
                         {journal.title}
                       </h4>
                       <p className="text-xs text-gray-600 font-[family-name:var(--font-inter)] line-clamp-2 leading-relaxed">
                         {journal.tagline}
                       </p>
 
-                      <div className="flex items-baseline gap-2 pt-2">
-                        <span className="text-xl font-extrabold text-[#0D4F4F] font-[family-name:var(--font-sora)]">
-                          ₹{journal.price}
-                        </span>
-                        <span className="text-xs line-through text-gray-400 font-[family-name:var(--font-inter)]">
-                          ₹{journal.originalPrice}
+                      {/* Inside Highlights */}
+                      <div className="space-y-1 bg-gray-50 p-3 rounded-2xl border border-gray-100">
+                        {journal.insideList.slice(0, 2).map((feature) => (
+                          <div key={feature} className="flex items-center gap-1.5 text-[11px] text-gray-700 font-[family-name:var(--font-inter)]">
+                            <span className="text-emerald-500 font-extrabold">✓</span>
+                            <span className="truncate">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Price Section */}
+                      <div className="flex items-baseline justify-between pt-1">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-2xl font-extrabold text-[#0D4F4F] font-[family-name:var(--font-sora)]">
+                            ₹{journal.price}
+                          </span>
+                          <span className="text-xs line-through text-gray-400 font-[family-name:var(--font-inter)]">
+                            ₹{journal.originalPrice}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                          28% OFF
                         </span>
                       </div>
                     </div>
 
-                    {/* Card Actions */}
+                    {/* Action Buttons */}
                     <div className="pt-4 border-t border-gray-100 mt-4 space-y-2">
                       <button
                         onClick={() => handleAddToCart(journal, 1)}
-                        className="w-full py-3 rounded-xl bg-[#E8705A] text-white font-[family-name:var(--font-sora)] font-bold text-xs shadow-md hover:bg-[#d4624e] transition-colors"
+                        className="w-full py-3 rounded-xl bg-[#E8705A] text-white font-[family-name:var(--font-sora)] font-bold text-xs shadow-md hover:bg-[#d4624e] transition-colors flex items-center justify-center gap-2"
                       >
-                        Add to Cart
+                        <span>Add to Cart</span>
+                        <span>🛒</span>
                       </button>
                       <button
                         onClick={() => {
                           setSelectedJournal(journal);
                           setQuickViewOpen(true);
                         }}
-                        className="w-full py-2.5 rounded-xl bg-gray-100 text-[#0D4F4F] font-[family-name:var(--font-sora)] font-bold text-xs hover:bg-gray-200 transition-colors"
+                        className="w-full py-2.5 rounded-xl bg-gray-100 text-[#0D4F4F] font-[family-name:var(--font-sora)] font-bold text-xs hover:bg-gray-200 transition-colors flex items-center justify-center gap-1"
                       >
-                        View Details
+                        <span>View Details</span>
+                        <span className="transition-transform group-hover:translate-x-1">→</span>
                       </button>
                     </div>
                   </motion.div>
